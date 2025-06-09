@@ -1,6 +1,14 @@
+
+
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from "react-native";
-import * as Speech from 'expo-speech';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
+import * as Speech from "expo-speech";
 
 const COLORS = [
   { name: "Kırmızı", value: "red" },
@@ -28,7 +36,7 @@ const ColorMatchGameScreen = () => {
   const [score, setScore] = useState(0);
   const [options, setOptions] = useState([]);
   const [errorMessageVisible, setErrorMessageVisible] = useState(false);
-  const [fadeAnim] = useState(new Animated.Value(0)); 
+  const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
     generateOptions();

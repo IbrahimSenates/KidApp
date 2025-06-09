@@ -6,10 +6,11 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Animated,
-  Button,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { enableScreens } from "react-native-screens";
+import * as Notifications from "expo-notifications";
+
 enableScreens(false);
 
 const { width, height } = Dimensions.get("window");
@@ -72,6 +73,13 @@ const BalloonPopScreen = () => {
   useEffect(() => {
     if (score >= 10) {
       setGameOver(true);
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "🎉 Harika İş!",
+          body: "Tüm balonları patlattın! Yeni bir oyuna hazır mısın?",
+        },
+        trigger: null, // Hemen göster
+      });
     }
   }, [score]);
 
@@ -99,12 +107,19 @@ const BalloonPopScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.score}>Skor: {score}</Text>
+      <Text style={styles.score}>🎯 Skor: {score}</Text>
 
       {gameOver ? (
         <View style={styles.gameOverContainer}>
-          <Text style={styles.gameOverText}>🎉 Tebrikler! Oyun Bitti 🎉</Text>
-          <Button title="Yeniden Başla" onPress={restartGame} />
+          <Text style={styles.gameOverEmoji}>🎈🎉</Text>
+          <Text style={styles.gameOverText}>
+            Harikasın! Tüm balonları patlattın! 🎊
+          </Text>
+          <TouchableWithoutFeedback onPress={restartGame}>
+            <View style={styles.playAgainButton}>
+              <Text style={styles.playAgainText}>🔁 Yeniden Oyna</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       ) : (
         balloons.map((balloon) => (
@@ -141,11 +156,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 50,
   },
+  gameOverEmoji: {
+    fontSize: 48,
+    marginBottom: 8,
+  },
   gameOverText: {
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 20,
     color: "#00695c",
+    textAlign: "center",
+  },
+  playAgainButton: {
+    backgroundColor: "#ffca28",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+    marginTop: 20,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  playAgainText: {
+    color: "#4e342e",
+    fontSize: 20,
+    fontWeight: "bold",
     textAlign: "center",
   },
 });
